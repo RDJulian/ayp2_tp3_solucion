@@ -1,0 +1,10 @@
+name: Google Test CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build and Run Test Suite
+        run: mkdir ${{github.workspace}}/tests/build && cd ${{github.workspace}}/tests/build && cmake .. && cmake --build . && ./Google_Tests_run
