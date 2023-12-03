@@ -23,6 +23,8 @@ const size_t CON_UNA_SOLA_ARMA = 2;
 // El unico método que falta implementar y que merece un comentario es el de "mover a James en un casillero".
 // Lo unico que puede ocurrir, en ese caso, potencialmente, es que al mover a James, se ahuyenta a un Pyramid Head.
 // La forma en que pensé resolverlo es eliminar ese Pyramid Head al mover a James, luego volver a calcular los grafos.
+// Se equipan armas debiles siempre que sea posible porque se calcula el mejor camino posible, ya sea con un arma
+// equipada o no.
 
 int main() {
     // Atributos. Probablemente.
@@ -46,7 +48,7 @@ int main() {
         // Reviso qué grafo deberia usar, dadas las condiciones. Si son 3 grafos es porque hay 2 Pyramids.
         // Esto es, de nuevo, extremadamente específico a la consigna, y agregar un Pyramid rompe.
         cantidad_armas = inventario_armas.tamanio() + (arma_actual ? 1 : 0);
-        if (cantidad_armas >= 1 && grafos.size() < 3) {
+        if (cantidad_armas >= 2 || (cantidad_armas >= 1 && grafos.size() < 3)) {
             grafo_a_usar = CON_ARMAS;
         } else if (cantidad_armas == 1 && grafos.size() == 3) {
             grafo_a_usar = CON_UNA_SOLA_ARMA;
@@ -87,7 +89,12 @@ int main() {
                     PYRAMID) {
                     std::cout << "Se rompió el arma actual: " << arma_actual;
                     delete arma_actual;
-                    arma_actual = nullptr;
+                    if (inventario_armas.consultar_arma(false)) {
+                        arma_actual = inventario_armas.obtener_arma(false);
+                        std::cout << "James equipó el arma: " << arma_actual;
+                    } else {
+                        arma_actual = nullptr;
+                    }
                 }
                 i++;
             }
