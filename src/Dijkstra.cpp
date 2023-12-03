@@ -18,7 +18,7 @@ void Dijkstra::inicializar_arreglos(size_t origen) {
     for (size_t i = 0; i < cantidad_vertices; i++) {
         vertices_visitados[i] = false;
         recorrido[i] = origen;
-        distancia[i] = matriz_adyacencia.elemento(origen, i);
+        distancia[i] = matriz_adyacencia.elemento((int) origen, (int) i);
     }
     vertices_visitados[origen] = true;
 }
@@ -38,8 +38,8 @@ size_t Dijkstra::vertice_minima_distancia() {
 void Dijkstra::actualizar_distancia(size_t vertice) {
     for (size_t i = 0; i < cantidad_vertices; i++) {
         if (!vertices_visitados[i] && distancia[vertice] != INFINITO &&
-            distancia[i] > matriz_adyacencia.elemento(vertice, i) + distancia[vertice]) {
-            distancia[i] = matriz_adyacencia.elemento(vertice, i) + distancia[vertice];
+            distancia[i] > matriz_adyacencia.elemento((int) vertice, (int) i) + distancia[vertice]) {
+            distancia[i] = matriz_adyacencia.elemento((int) vertice, (int) i) + distancia[vertice];
             recorrido[i] = vertice;
         }
     }

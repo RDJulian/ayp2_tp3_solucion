@@ -23,7 +23,7 @@ public:
     static bool igual(Arma* arma1, Arma* arma2);
 
     // Pre: Ninguna de las armas puede ser nullptr.
-    // Post: Devuelve true si el primer arma es mas fuerte que la segunda, por potencia.
+    // Post: Devuelve true si el primer arma es mas estrategia_fuerte que la segunda, por potencia.
     static bool mayor(Arma* arma1, Arma* arma2);
 
     // Pre: -
@@ -35,7 +35,7 @@ public:
     static bool igual(Arma arma1, Arma arma2);
 
     // Pre: -
-    // Post: Devuelve true si el primer arma es mas fuerte que la segunda, por potencia.
+    // Post: Devuelve true si el primer arma es mas estrategia_fuerte que la segunda, por potencia.
     static bool mayor(Arma arma1, Arma arma2);
 
     // Pre: -
@@ -47,7 +47,7 @@ public:
     bool operator==(Arma arma);
 
     // Pre: -
-    // Post: Devuelve true si el primer arma es mas fuerte que la segunda, por potencia.
+    // Post: Devuelve true si el primer arma es mas estrategia_fuerte que la segunda, por potencia.
     bool operator>(Arma arma);
 
     // Pre: -

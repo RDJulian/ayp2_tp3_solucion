@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <queue>
+#include <cstddef>
 
 template<typename T, bool menor(T, T), bool igual(T, T)>
 class NodoABB {
@@ -56,9 +57,25 @@ public:
     // Post: Ejecuta el método/función en el subárbol.
     void ejecutar(void metodo(T));
 
+    // Pre: -
+    // Post: Devuelve la altura del subárbol.
+    size_t altura();
+
     // Destructor.
     ~NodoABB();
 };
+
+template<typename T, bool menor(T, T), bool igual(T, T)>
+size_t NodoABB<T, menor, igual>::altura() {
+    size_t altura_izquierdo = 0, altura_derecho = 0;
+    if (hijo_izquierdo) {
+        altura_izquierdo = hijo_izquierdo->altura();
+    }
+    if (hijo_derecho) {
+        altura_derecho = hijo_derecho->altura();
+    }
+    return std::max(altura_derecho, altura_izquierdo) + 1;
+}
 
 template<typename T, bool menor(T, T), bool igual(T, T)>
 void NodoABB<T, menor, igual>::ejecutar(void metodo(T)) {

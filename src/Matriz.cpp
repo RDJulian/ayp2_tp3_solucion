@@ -51,15 +51,19 @@ Matriz& Matriz::operator=(const Matriz& matriz1) {
     return *this;
 }
 
-size_t Matriz::calcular_indice(size_t i, size_t j) {
-    return i * columna + j;
+bool Matriz::indice_valido(int i, int j) {
+    return i >= 0 && i < (int) fila && j >= 0 && j < (int) columna;
 }
 
-bool Matriz::indice_valido(size_t i, size_t j) {
-    return i < fila && j < columna;
+size_t Matriz::calcular_indice(int i, int j) {
+    return (size_t) i * columna + (size_t) j;
 }
 
-int& Matriz::elemento(size_t i, size_t j) {
+size_t Matriz::calcular_indice(std::pair<int, int> indices) {
+    return calcular_indice(indices.first, indices.second);
+}
+
+int& Matriz::elemento(int i, int j) {
     if (!indice_valido(i, j) || !matriz) {
         throw Indice_no_valido_exception();
     } else {
@@ -67,12 +71,16 @@ int& Matriz::elemento(size_t i, size_t j) {
     }
 }
 
+int& Matriz::elemento(std::pair<int, int> indices) {
+    return elemento(indices.first, indices.second);
+}
+
 void Matriz::expandir() {
     int* matriz_aux = new int[(fila + 1) * (columna + 1)];
     for (size_t i = 0; i < fila + 1; i++) {
         for (size_t j = 0; j < columna + 1; j++) {
             try {
-                matriz_aux[i * (columna + 1) + j] = elemento(i, j);
+                matriz_aux[i * (columna + 1) + j] = elemento((int) i, (int) j);
             } catch (Indice_no_valido_exception& e) {
                 matriz_aux[i * (columna + 1) + j] = 0;
             }

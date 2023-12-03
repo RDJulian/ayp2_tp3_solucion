@@ -3,6 +3,7 @@
 
 #include <exception>
 #include <cstddef>
+#include <utility>
 
 class Indice_no_valido_exception : public std::exception {
 public:
@@ -12,27 +13,10 @@ public:
 };
 
 class Matriz {
-private:
+protected:
     int* matriz = nullptr;
     size_t fila;
     size_t columna;
-
-    // Pre: -
-    // Post: Devuelve true si el indice es valido (0 <= i < filas, 0 <= j < columnas).
-    bool indice_valido(size_t i, size_t j);
-
-    // Pre: El indice bidimensional debe ser valido.
-    // Post: Devuelve el indice unidimensional equivalente al ingresado.
-    size_t calcular_indice(size_t i, size_t j);
-
-    // Pre: Ninguna de las dimesiones puede ser menor que 1.
-    // Post: Genera una matriz con las dimensiones indicadas, inicializada con el valor ingresado.
-    Matriz(size_t fila, size_t columna, int valor);
-
-    // Pre: Ninguna de las dimesiones puede ser menor que 1.
-    // Post: Genera una matriz con las dimensiones indicadas, inicializada con 0.
-    Matriz(size_t fila, size_t columna);
-
 public:
     // Constructor default
     Matriz();
@@ -45,15 +29,37 @@ public:
     // Post: Genera una matriz cuadrada con el tamaño indicado, inicializada con 0.
     Matriz(size_t tamanio);
 
+    // Pre: Ninguna de las dimesiones puede ser menor que 1.
+    // Post: Genera una matriz con las dimensiones indicadas, inicializada con el valor ingresado.
+    Matriz(size_t fila, size_t columna, int valor);
+
+    // Pre: Ninguna de las dimesiones puede ser menor que 1.
+    // Post: Genera una matriz con las dimensiones indicadas, inicializada con 0.
+    Matriz(size_t fila, size_t columna);
+
     // Constructor por copia.
     Matriz(const Matriz& matriz1);
 
     // Operador de asignación.
     Matriz& operator=(const Matriz& matriz1);
 
+    // Pre: -
+    // Post: Devuelve true si el indice es valido (0 <= i < filas, 0 <= j < columnas).
+    bool indice_valido(int i, int j);
+
+    // Pre: El indice bidimensional debe ser valido.
+    // Post: Devuelve el indice unidimensional equivalente al ingresado.
+    size_t calcular_indice(int i, int j);
+
+    // Sobrecarga para simplificar código.
+    size_t calcular_indice(std::pair<int, int> indices);
+
     // Pre: El indice debe ser valido, es decir, 0 <= i < filas, 0 <= j < columnas.
     // Post: Devuelve la referecia al elemento accedido.
-    int& elemento(size_t i, size_t j);
+    int& elemento(int i, int j);
+
+    // Sobrecarga para simplificar código.
+    int& elemento(std::pair<int, int> indices);
 
     // Pre: -
     // Post: Aumenta el tamaño de la matriz en una fila y una columna.

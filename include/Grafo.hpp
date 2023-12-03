@@ -62,6 +62,8 @@ public:
     Grafo& operator=(const Grafo& grafo1);
 
     ~Grafo();
+
+    void juntar_grafos(Grafo& grafo);
 };
 
 #endif

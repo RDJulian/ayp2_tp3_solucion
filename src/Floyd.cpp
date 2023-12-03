@@ -2,9 +2,9 @@
 
 void Floyd::inicializar_matrices() {
     matriz_caminos = Matriz(cantidad_vertices);
-    for (size_t i = 0; i < cantidad_vertices; i++) {
-        for (size_t j = 0; j < cantidad_vertices; j++) {
-            matriz_caminos.elemento(i, j) = (int) j;
+    for (int i = 0; i < (int) cantidad_vertices; i++) {
+        for (int j = 0; j < (int) cantidad_vertices; j++) {
+            matriz_caminos.elemento(i, j) = j;
         }
     }
 
@@ -16,7 +16,7 @@ std::vector<size_t> Floyd::obtener_camino(size_t origen, size_t destino) {
     size_t vertice = origen;
     camino.push_back(vertice);
     while (vertice != destino) {
-        vertice = size_t(matriz_caminos.elemento(vertice, destino));
+        vertice = size_t(matriz_caminos.elemento((int) vertice, (int) destino));
         camino.push_back(vertice);
     }
     return camino;
@@ -28,9 +28,9 @@ Floyd::calcular_camino_minimo(Matriz adyacencia, size_t vertices, size_t origen,
         matriz_adyacencia = adyacencia;
         cantidad_vertices = vertices;
         inicializar_matrices();
-        for (size_t k = 0; k < vertices; k++) {
-            for (size_t i = 0; i < vertices; i++) {
-                for (size_t j = 0; j < vertices; j++) {
+        for (int k = 0; k < (int) vertices; k++) {
+            for (int i = 0; i < (int) vertices; i++) {
+                for (int j = 0; j < (int) vertices; j++) {
                     if (matriz_costos.elemento(i, j) > (matriz_costos.elemento(i, k) + matriz_costos.elemento(k, j))) {
                         matriz_costos.elemento(i, j) = matriz_costos.elemento(i, k) + matriz_costos.elemento(k, j);
                         matriz_caminos.elemento(i, j) = matriz_caminos.elemento(i, k);

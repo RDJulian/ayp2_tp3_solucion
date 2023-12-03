@@ -19,10 +19,22 @@ add_executable(ayp2_tp3_solucion
         src/Floyd.cpp
         src/Dijkstra.cpp
         src/Matriz.cpp
+        src/ConversorTablero.cpp
+        src/Tablero.cpp
+        src/Visual.cpp
         include/ABB.hpp
         include/NodoABB.hpp
         include/Heap.hpp
+        include/color.hpp
         main.cpp
+        src/Random.cpp
+        include/Random.hpp
+        src/GeneradorTablero.cpp
+        include/GeneradorTablero.hpp
+        src/InventarioArmas.cpp
+        include/InventarioArmas.hpp
+        src/ArbolPlacas.cpp
+        include/ArbolPlacas.hpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")

@@ -60,6 +60,10 @@ public:
     // Post: Devuelve true si el árbol está vacio.
     bool vacio();
 
+    // Pre: -
+    // Post: Devuelve la altura del árbol. Si el árbol está vacio, devuelve 0.
+    size_t altura();
+
     // El constructor de copia está deshabilitado.
     ABB(const ABB& abb) = delete;
 
@@ -69,6 +73,15 @@ public:
     // Destructor.
     ~ABB();
 };
+
+template<typename T, bool menor(T, T), bool igual(T, T)>
+size_t ABB<T, menor, igual>::altura() {
+    if (vacio()) {
+        return 0;
+    } else {
+        return raiz->altura();
+    }
+}
 
 template<typename T, bool menor(T, T), bool igual(T, T)>
 ABB<T, menor, igual>::ABB() {
