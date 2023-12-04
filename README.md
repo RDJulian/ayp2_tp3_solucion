@@ -1,10 +1,9 @@
 # Solución TP3 AyP2 2c2023
 
-<p style="text-align: center">
-    <img src="tablero.png" alt="Tablero">
+<p align="center">
+   <img src="tablero.png" alt="Tablero"><br>
+   Posible solución (acotada) del TP3 grupal de AyP2.
 </p>
-
-Posible solución (acotada) del TP3 grupal de AyP2.
 
 La solución es acotada porque no se codea la interacción con el usuario. El simulador "se juega solo".<br>
 La dificultad del TP no pasa por recibir y validar inputs del usuario (~~para nada es fiaca...~~)<br>
