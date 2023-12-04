@@ -15,7 +15,7 @@ public:
     Arma(std::string nombre, size_t potencia);
 
     // Pre: Ninguna de las armas puede ser nullptr.
-    // Post: Devuelve true si el primer arma es mas debil que la segunda, por potencia.
+    // Post: Devuelve true si la primera arma es más debil que la segunda, por potencia.
     static bool menor(Arma* arma1, Arma* arma2);
 
     // Pre: Ninguna de las armas puede ser nullptr.
@@ -23,11 +23,11 @@ public:
     static bool igual(Arma* arma1, Arma* arma2);
 
     // Pre: Ninguna de las armas puede ser nullptr.
-    // Post: Devuelve true si el primer arma es mas estrategia_fuerte que la segunda, por potencia.
+    // Post: Devuelve true si la primera arma es más fuerte que la segunda, por potencia.
     static bool mayor(Arma* arma1, Arma* arma2);
 
     // Pre: -
-    // Post: Devuelve true si el primer arma es mas debil que la segunda, por potencia.
+    // Post: Devuelve true si la primera arma es más debil que la segunda, por potencia.
     static bool menor(Arma arma1, Arma arma2);
 
     // Pre: -
@@ -35,11 +35,11 @@ public:
     static bool igual(Arma arma1, Arma arma2);
 
     // Pre: -
-    // Post: Devuelve true si el primer arma es mas estrategia_fuerte que la segunda, por potencia.
+    // Post: Devuelve true si la primera arma es más fuerte que la segunda, por potencia.
     static bool mayor(Arma arma1, Arma arma2);
 
     // Pre: -
-    // Post: Devuelve true si el primer arma es mas debil que la segunda, por potencia.
+    // Post: Devuelve true si la primera arma es más debil que la segunda, por potencia.
     bool operator<(Arma arma);
 
     // Pre: -
@@ -47,7 +47,7 @@ public:
     bool operator==(Arma arma);
 
     // Pre: -
-    // Post: Devuelve true si el primer arma es mas estrategia_fuerte que la segunda, por potencia.
+    // Post: Devuelve true si la primera arma es más fuerte que la segunda, por potencia.
     bool operator>(Arma arma);
 
     // Pre: -
@@ -59,7 +59,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Arma* arma);
 
     // Pre: El arma no puede ser nullptr.
-    // Post: Libera la memoria reservada para la placa.
+    // Post: Libera la memoria reservada para el arma.
     static void liberar(Arma* arma);
 
     // Destructor.

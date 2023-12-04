@@ -1,6 +1,7 @@
 #include "Tablero.hpp"
 #include "Random.hpp"
 #include "ConversorTablero.hpp"
+#include <iostream>
 
 Tablero::Tablero(std::pair<size_t, size_t> dimensiones, Casillero inicio, Casillero destino,
                  const std::vector<Casillero>& paredes) : Matriz(dimensiones.first, dimensiones.second, CAMINO) {
@@ -22,14 +23,23 @@ bool Tablero::puede_generar_pyramid_head(Casillero pyramid) {
            elemento(pyramid) != PYRAMID;
 }
 
+// NOTA: Se podría iterar por el tablero, obtener los casilleros válidos, luego sacar uno al azar.
 void Tablero::generar_pyramid_head() {
     bool valido = false;
-    while (!valido) {
+    size_t i = 0;
+    const size_t MAX_ITERACIONES = 100;
+    while (!valido && i < MAX_ITERACIONES) {
         Casillero pyramid = {Random::number(0, (int) fila - 1),
                              Random::number(0, (int) columna - 1)};
         if (puede_generar_pyramid_head(pyramid)) {
             elemento(pyramid) = PYRAMID;
             valido = true;
+        } else {
+            i++;
+        }
+        if (i >= MAX_ITERACIONES) {
+            std::cout << "WARNING: Se intentó insertar el Pyramid Head en " << i << " casilleros distintos, sin éxito."
+                      << std::endl;
         }
     }
 }

@@ -121,7 +121,7 @@ std::vector<Grafo> ConversorTablero::generar_grafos(Tablero& tablero) {
         ejecutar_adyacentes(pyramids[1], grafo_caso_especial, tablero, redirigir_grafo_pyramid_1);
 
         // Conecto el destino de los "subgrafos" al destino original.
-        // El offset no es mas que la cantidad de vértices (81, en este problema).
+        // El offset no es más que la cantidad de vértices (81, en este problema).
         vertice = tablero.obtener_vertice(destino);
         size_t offset = tablero.columnas() * tablero.filas();
         grafo_caso_especial.cambiar_arista(vertice + offset, vertice, 0);

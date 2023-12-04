@@ -5,7 +5,7 @@
 #include <vector>
 #include <cstddef>
 
-/* Clase decoradora. Define los tipos de datos que usa el template std::pair.
+/* Clase decoradora. Define los tipos de datos que usa std::pair.
  * Como hereda de std::pair, puede usar todos los métodos de la clase. */
 class Camino : public std::pair<std::vector<size_t>, int> {
 public:

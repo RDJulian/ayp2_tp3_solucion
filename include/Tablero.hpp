@@ -65,7 +65,7 @@ public:
     size_t obtener_vertice(Casillero casillero);
 
     // Pre: -
-    // Post: Devuelve todos los caminos mínimos en base a los grafos generados.
+    // Post: Devuelve todos los caminos mínimos según los grafos generados.
     std::vector<Camino> obtener_caminos();
 
     // Pre: -

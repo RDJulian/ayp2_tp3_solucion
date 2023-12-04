@@ -23,7 +23,7 @@ private:
     int puntaje_total;
 
     // Pre: -
-    // Post: Calcula el mejor camino posible en base a las condiciones actuales de la partida.
+    // Post: Calcula el mejor camino posible según las condiciones actuales de la partida.
     // Si un camino empata con el camino sin arma equipada, se prioriza el camino sin arma.
     Camino obtener_camino_optimo(std::vector<Camino>& caminos);
 
@@ -39,7 +39,7 @@ public:
     Simulador();
 
     // Pre: -
-    // Post: Devuelve true si la partida sigue en curso. Esto es, si el camino no es imposible y si aun no recorrió
+    // Post: Devuelve true si la partida sigue en curso. Esto es, si el camino no es imposible y si aún no recorrió
     // el NIVEL_FINAL.
     bool partida_en_curso();
 
@@ -48,7 +48,7 @@ public:
     void mostrar_informacion();
 
     // Pre: -
-    // Post: Equipa el arma mas débil de James en caso de tener una en el inventario y no tener otra equipada.
+    // Post: Equipa el arma más débil de James en caso de tener una en el inventario y no tener otra equipada.
     void equipar_arma_debil();
 
     // Pre: -

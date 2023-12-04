@@ -18,7 +18,7 @@ public:
      * Para punteros, usar los siguientes. */
 
     // Pre: Ninguna de las placas puede ser nullptr.
-    // Post: Devuelve true si la primera placa es mas chica que la segunda, por ID.
+    // Post: Devuelve true si la primera placa es más chica que la segunda, por ID.
     static bool menor(Placa* placa1, Placa* placa2);
 
     // Pre: Ninguna de las placas puede ser nullptr.
@@ -28,7 +28,7 @@ public:
     /* Para estaticos, usar los siguientes. */
 
     // Pre: -
-    // Post: Devuelve true si la primera placa es mas chica que la segunda, por ID.
+    // Post: Devuelve true si la primera placa es más chica que la segunda, por ID.
     static bool menor(Placa placa1, Placa placa2);
 
     // Pre: -
@@ -36,7 +36,7 @@ public:
     static bool igual(Placa placa1, Placa placa2);
 
     // Pre: -
-    // Post: Devuelve true si la placa es mas chica, por ID.
+    // Post: Devuelve true si la placa es más chica, por ID.
     bool operator<(Placa placa);
 
     // Pre: -

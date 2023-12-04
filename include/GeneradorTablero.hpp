@@ -68,7 +68,7 @@ const std::vector<Casillero> LAYOUT_2 = {
 class GeneradorTablero {
 public:
     // Pre: -
-    // Post: Genera un tablero en base a la altura del árbol de placas especificado.
+    // Post: Genera un tablero según la altura del árbol de placas especificado.
     static Tablero generar_tablero(size_t altura);
 };
 
