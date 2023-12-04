@@ -16,6 +16,7 @@ add_executable(Google_Tests_run
         ../src/TDAs/Grafo/Dijkstra.cpp
         ../src/TDAs/Grafo/Floyd.cpp
         ../src/TDAs/Matriz.cpp
+        ../src/Camino.cpp
 )
 
 target_link_libraries(Google_Tests_run gtest gtest_main)
