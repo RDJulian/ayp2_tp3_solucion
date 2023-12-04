@@ -3,9 +3,10 @@
 
 #include "Tablero.hpp"
 
-// TODO: Documentar
 class Visual {
 public:
+    // Pre: -
+    // Post: Imprime por pantalla la representación visual del tablero.
     static void imprimir_tablero(Matriz& visualizacion);
 };
 

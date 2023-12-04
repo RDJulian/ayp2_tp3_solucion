@@ -4,7 +4,8 @@
 #include <utility>
 #include <cstddef>
 
-// TODO: Documentar
+/* Clase decoradora. Define los tipos de datos que usa el template std::pair.
+ * Como hereda de std::pair, puede usar todos los métodos de la clase. */
 class Casillero : public std::pair<size_t, size_t> {
 public:
     Casillero();
@@ -15,6 +16,8 @@ public:
 
     Casillero(std::pair<int, int> indices);
 
+    // Pre: -
+    // Post: Devuelve un pair con los mismos datos, casteados a int.
     std::pair<int, int> a_int();
 };
 

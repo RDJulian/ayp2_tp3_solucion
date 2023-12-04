@@ -2,11 +2,12 @@
 
 // Métodos estáticos auxiliares para encapsular cada una de las diferentes transformaciones sobre los adyacentes.
 void ConversorTablero::conectar_adyacentes(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
-    grafo.cambiar_arista(tablero.obtener_vertice(casillero), tablero.obtener_vertice(adyacente), PESO);
+    grafo.cambiar_arista(tablero.obtener_vertice(casillero), tablero.obtener_vertice(adyacente), PESO_BASE);
 }
 
 void ConversorTablero::multiplicar_costos(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
-    grafo.cambiar_arista(tablero.obtener_vertice(adyacente), tablero.obtener_vertice(casillero), PESO * PENALIZACION);
+    grafo.cambiar_arista(tablero.obtener_vertice(adyacente), tablero.obtener_vertice(casillero),
+                         PESO_BASE * PENALIZACION);
 }
 
 void
@@ -21,7 +22,7 @@ ConversorTablero::redirigir_grafo_pyramid_1(Casillero casillero, Casillero adyac
     size_t vertice_casillero = tablero.obtener_vertice(casillero);
     size_t vertice_adyacente = tablero.obtener_vertice(adyacente);
     size_t offset = tablero.columnas() * tablero.filas();
-    grafo.cambiar_arista(vertice_adyacente, vertice_casillero + offset, PESO);
+    grafo.cambiar_arista(vertice_adyacente, vertice_casillero + offset, PESO_BASE);
 }
 
 void
@@ -29,7 +30,7 @@ ConversorTablero::redirigir_grafo_pyramid_2(Casillero casillero, Casillero adyac
     size_t vertice_casillero = tablero.obtener_vertice(casillero);
     size_t vertice_adyacente = tablero.obtener_vertice(adyacente);
     size_t offset = tablero.columnas() * tablero.filas();
-    grafo.cambiar_arista(vertice_adyacente, vertice_casillero + 2 * offset, PESO);
+    grafo.cambiar_arista(vertice_adyacente, vertice_casillero + 2 * offset, PESO_BASE);
 }
 
 // TRUCAZO: Hace algo en los casilleros adyacentes (desde el punto de vista matricial del problema) sobre el grafo.
