@@ -1,9 +1,10 @@
 #ifndef AYP2_TP3_SOLUCION_INVENTARIOARMAS_HPP
 #define AYP2_TP3_SOLUCION_INVENTARIOARMAS_HPP
 
-#include "Heap.hpp"
+#include "TDAs/Heap.hpp"
 #include "Arma.hpp"
 
+// TODO: Documentar
 class InventarioArmas {
 private:
     Heap<Arma*, Arma::menor> inventario_debil;

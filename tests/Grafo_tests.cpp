@@ -1,10 +1,10 @@
 #include "gmock/gmock.h"
-#include "Grafo.hpp"
+#include "TDAs/Grafo/Grafo.hpp"
 
 class Grafo_tests : public ::testing::Test {
 protected:
     Grafo grafo;
-    std::pair<std::vector<size_t>, int> resultado;
+    Camino resultado;
 
     void generar_grafo() {
         grafo = Grafo(7);

@@ -7,7 +7,7 @@ void ArbolPlacas::generar_placa_aleatoria() {
     bool valido = false;
     Placa* placa;
     while (!valido) {
-        placa = new Placa("RIP", "Big Ounce", Random::random(100, 666));
+        placa = new Placa("RIP", "Biggerton Ouncerton", Random::number(100, 666));
         if (consulta(placa)) {
             delete placa;
         } else {

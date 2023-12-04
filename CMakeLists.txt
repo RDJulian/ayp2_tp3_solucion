@@ -15,26 +15,24 @@ include_directories(src)
 add_executable(ayp2_tp3_solucion
         src/Placa.cpp
         src/Arma.cpp
-        src/Grafo.cpp
-        src/Floyd.cpp
-        src/Dijkstra.cpp
-        src/Matriz.cpp
+        src/TDAs/Grafo/Grafo.cpp
+        src/TDAs/Grafo/Floyd.cpp
+        src/TDAs/Grafo/Dijkstra.cpp
+        src/TDAs/Matriz.cpp
         src/ConversorTablero.cpp
         src/Tablero.cpp
         src/Visual.cpp
-        include/ABB.hpp
-        include/NodoABB.hpp
-        include/Heap.hpp
-        include/color.hpp
-        main.cpp
         src/Random.cpp
-        include/Random.hpp
         src/GeneradorTablero.cpp
-        include/GeneradorTablero.hpp
         src/InventarioArmas.cpp
-        include/InventarioArmas.hpp
         src/ArbolPlacas.cpp
-        include/ArbolPlacas.hpp
+        src/Casillero.cpp
+        src/Simulador.cpp
+        src/Camino.cpp
+        include/TDAs/ABB.hpp
+        include/TDAs/NodoABB.hpp
+        include/TDAs/Heap.hpp
+        main.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")

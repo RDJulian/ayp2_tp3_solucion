@@ -3,7 +3,7 @@
 
 class Random {
 public:
-    static int random(int low, int high);
+    static int number(int low, int high);
 };
 
 #endif

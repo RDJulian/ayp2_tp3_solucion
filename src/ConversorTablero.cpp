@@ -1,66 +1,58 @@
 #include "ConversorTablero.hpp"
-#include <cmath>
 
-void
-ConversorTablero::conectar_vertices(std::pair<int, int> i1, std::pair<int, int> i2, Grafo& grafo, Tablero& tablero) {
-    size_t vertice_1 = tablero.calcular_indice(i1);
-    size_t vertice_2 = tablero.calcular_indice(i2);
-    grafo.cambiar_arista(vertice_1, vertice_2, PESO);
-    grafo.cambiar_arista(vertice_2, vertice_1, PESO);
+// Métodos estáticos auxiliares para encapsular cada una de las diferentes transformaciones sobre los adyacentes.
+void ConversorTablero::conectar_adyacentes(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
+    grafo.cambiar_arista(tablero.obtener_vertice(casillero), tablero.obtener_vertice(adyacente), PESO);
+}
+
+void ConversorTablero::multiplicar_costos(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
+    grafo.cambiar_arista(tablero.obtener_vertice(adyacente), tablero.obtener_vertice(casillero), PESO * PENALIZACION);
 }
 
 void
-ConversorTablero::multiplicar_costos(std::pair<int, int> i1, std::pair<int, int> i2, Grafo& grafo, Tablero& tablero) {
-    size_t vertice_1 = tablero.calcular_indice(i1);
-    size_t vertice_2 = tablero.calcular_indice(i2);
-    grafo.cambiar_arista(vertice_2, vertice_1, PESO * PENALIZACION);
-}
-
-void ConversorTablero::afectar_adyacentes([[maybe_unused]] std::pair<int, int> i1, std::pair<int, int> i2, Grafo& grafo,
-                                          Tablero& tablero) {
-    if (tablero.elemento(i2) != PARED && tablero.elemento(i2) != PYRAMID) {
-        verificar_adyacentes(i2, grafo, tablero, multiplicar_costos);
+ConversorTablero::multiplicar_adyacentes(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
+    if (tablero.elemento(adyacente) != PARED && tablero.elemento(adyacente) != PYRAMID) {
+        ejecutar_adyacentes(adyacente, grafo, tablero, multiplicar_costos);
     }
 }
 
-// Feote pero funciona. Extremadamente específico a la consigna (solo 2 Pyramids). Agregar uno mas rompe.
-void ConversorTablero::redirigir_grafo_pyramid_1(std::pair<int, int> i1, std::pair<int, int> i2, Grafo& grafo,
-                                                 Tablero& tablero) {
-    size_t vertice_1 = tablero.calcular_indice(i1);
-    size_t vertice_2 = tablero.calcular_indice(i2);
-    grafo.cambiar_arista(vertice_2, vertice_1 + (size_t) pow((double) tablero.columnas(), 2), PESO);
+void
+ConversorTablero::redirigir_grafo_pyramid_1(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
+    size_t vertice_casillero = tablero.obtener_vertice(casillero);
+    size_t vertice_adyacente = tablero.obtener_vertice(adyacente);
+    size_t offset = tablero.columnas() * tablero.filas();
+    grafo.cambiar_arista(vertice_adyacente, vertice_casillero + offset, PESO);
 }
 
-// Feote pero funciona. Extremadamente específico a la consigna (solo 2 Pyramids). Agregar uno mas rompe.
-void ConversorTablero::redirigir_grafo_pyramid_2(std::pair<int, int> i1, std::pair<int, int> i2, Grafo& grafo,
-                                                 Tablero& tablero) {
-    size_t vertice_1 = tablero.calcular_indice(i1);
-    size_t vertice_2 = tablero.calcular_indice(i2);
-    grafo.cambiar_arista(vertice_2, vertice_1 + 2 * (size_t) pow((double) tablero.columnas(), 2), PESO);
+void
+ConversorTablero::redirigir_grafo_pyramid_2(Casillero casillero, Casillero adyacente, Grafo& grafo, Tablero& tablero) {
+    size_t vertice_casillero = tablero.obtener_vertice(casillero);
+    size_t vertice_adyacente = tablero.obtener_vertice(adyacente);
+    size_t offset = tablero.columnas() * tablero.filas();
+    grafo.cambiar_arista(vertice_adyacente, vertice_casillero + 2 * offset, PESO);
 }
 
 // TRUCAZO: Hace algo en los casilleros adyacentes (desde el punto de vista matricial del problema) sobre el grafo.
-void ConversorTablero::verificar_adyacentes(std::pair<int, int> i1, Grafo& grafo, Tablero& tablero,
-                                            void accion(std::pair<int, int>, std::pair<int, int>, Grafo&, Tablero&)) {
-    if (tablero.indice_valido(i1.first + 1, i1.second)) {
-        accion(i1, {i1.first + 1, i1.second}, grafo, tablero);
-    }
-    if (tablero.indice_valido(i1.first - 1, i1.second)) {
-        accion(i1, {i1.first - 1, i1.second}, grafo, tablero);
-    }
-    if (tablero.indice_valido(i1.first, i1.second + 1)) {
-        accion(i1, {i1.first, i1.second + 1}, grafo, tablero);
-    }
-    if (tablero.indice_valido(i1.first, i1.second - 1)) {
-        accion(i1, {i1.first, i1.second - 1}, grafo, tablero);
+void ConversorTablero::ejecutar_adyacentes(Casillero casillero, Grafo& grafo, Tablero& tablero,
+                                           void accion(Casillero, Casillero, Grafo&, Tablero&)) {
+    int i = (int) casillero.first;
+    int j = (int) casillero.second;
+    std::vector<std::pair<int, int>> posibles_adyacentes = {{i + 1, j},
+                                                            {i - 1, j},
+                                                            {i,     j + 1},
+                                                            {i,     j - 1}};
+    for (auto adyacente: posibles_adyacentes) {
+        if (tablero.casillero_valido(adyacente)) {
+            accion(casillero, adyacente, grafo, tablero);
+        }
     }
 }
 
 Grafo ConversorTablero::generar_grafo_base(Tablero& tablero) {
     Grafo grafo(tablero.columnas() * tablero.filas());
-    for (int i = 0; i < (int) tablero.filas(); i++) {
-        for (int j = 0; j < (int) tablero.columnas(); j++) {
-            verificar_adyacentes({i, j}, grafo, tablero, conectar_vertices);
+    for (size_t i = 0; i < tablero.filas(); i++) {
+        for (size_t j = 0; j < tablero.columnas(); j++) {
+            ejecutar_adyacentes({i, j}, grafo, tablero, conectar_adyacentes);
         }
     }
     return grafo;
@@ -68,17 +60,15 @@ Grafo ConversorTablero::generar_grafo_base(Tablero& tablero) {
 
 std::vector<Grafo> ConversorTablero::generar_grafos(Tablero& tablero) {
     std::vector<Grafo> grafos;
-    std::vector<std::pair<int, int>> pyramids;
-    std::pair<int, int> destino;
+    std::vector<Casillero> pyramids;
+    Casillero destino;
 
     // Grafo sin Pyramids
     Grafo grafo = generar_grafo_base(tablero);
-    size_t vertice;
-    for (int i = 0; i < (int) tablero.filas(); i++) {
-        for (int j = 0; j < (int) tablero.columnas(); j++) {
+    for (size_t i = 0; i < tablero.filas(); i++) {
+        for (size_t j = 0; j < tablero.columnas(); j++) {
             if (tablero.elemento(i, j) == PARED) {
-                vertice = tablero.calcular_indice(i, j);
-                grafo.aislar_vertice(vertice);
+                grafo.aislar_vertice(tablero.obtener_vertice({i, j}));
             } else if (tablero.elemento(i, j) == DESTINO) {
                 destino = {i, j};
             }
@@ -88,12 +78,11 @@ std::vector<Grafo> ConversorTablero::generar_grafos(Tablero& tablero) {
 
     // Grafo con Pyramids
     Grafo grafo_pyramids = grafo;
-    for (int i = 0; i < (int) tablero.filas(); i++) {
-        for (int j = 0; j < (int) tablero.columnas(); j++) {
+    for (size_t i = 0; i < tablero.filas(); i++) {
+        for (size_t j = 0; j < tablero.columnas(); j++) {
             if (tablero.elemento(i, j) == PYRAMID) {
-                verificar_adyacentes({i, j}, grafo_pyramids, tablero, afectar_adyacentes);
-                vertice = tablero.calcular_indice(i, j);
-                grafo_pyramids.aislar_vertice(vertice);
+                ejecutar_adyacentes({i, j}, grafo_pyramids, tablero, multiplicar_adyacentes);
+                grafo_pyramids.aislar_vertice(tablero.obtener_vertice({i, j}));
                 pyramids.emplace_back(i, j);
             }
         }
@@ -102,22 +91,23 @@ std::vector<Grafo> ConversorTablero::generar_grafos(Tablero& tablero) {
 
     // Grafo para el caso especial de una sola arma y dos Pyramids.
     // La forma de pensar el grafo es MUY SIMILAR al del ejemplo práctico de DD2.
-    // Este grafo es, sin embargo, MUY DEPENDIENTE de la consigna (son solo 2 Pyramids).
+    // Este grafo es, sin embargo, MUY DEPENDIENTE de la consigna (son exactamente dos Pyramids).
     // Agregar uno más rompe a pedazitos esta solución.
-    if (pyramids.size() == 2) {
+    if (pyramids.size() == CANTIDAD_MAXIMA_PYRAMIDS) {
         Grafo grafo_caso_especial = grafo;
         Grafo grafo_pyramid_1 = grafo;
         Grafo grafo_pyramid_2 = grafo;
+        size_t vertice;
 
         // Genero un grafo sin uno de los Pyramids.
-        verificar_adyacentes(pyramids[0], grafo_pyramid_1, tablero, afectar_adyacentes);
-        vertice = tablero.calcular_indice(pyramids[0]);
+        ejecutar_adyacentes(pyramids[0], grafo_pyramid_1, tablero, multiplicar_adyacentes);
+        vertice = tablero.obtener_vertice(pyramids[0]);
         grafo_pyramid_1.aislar_vertice(vertice);
         grafo_caso_especial.aislar_vertice(vertice);
 
-        // Idem para el otro.
-        verificar_adyacentes(pyramids[1], grafo_pyramid_2, tablero, afectar_adyacentes);
-        vertice = tablero.calcular_indice(pyramids[1]);
+        // Idem para el otro Pyramid.
+        ejecutar_adyacentes(pyramids[1], grafo_pyramid_2, tablero, multiplicar_adyacentes);
+        vertice = tablero.obtener_vertice(pyramids[1]);
         grafo_pyramid_2.aislar_vertice(vertice);
         grafo_caso_especial.aislar_vertice(vertice);
 
@@ -125,14 +115,16 @@ std::vector<Grafo> ConversorTablero::generar_grafos(Tablero& tablero) {
         grafo_caso_especial.juntar_grafos(grafo_pyramid_1);
         grafo_caso_especial.juntar_grafos(grafo_pyramid_2);
 
-        // Conecto los vértices adyacentes a un Pyramid para que pase a uno de los "subgrafos".
-        verificar_adyacentes(pyramids[0], grafo_caso_especial, tablero, redirigir_grafo_pyramid_2);
-        verificar_adyacentes(pyramids[1], grafo_caso_especial, tablero, redirigir_grafo_pyramid_1);
+        // Conecto los vértices adyacentes a un Pyramid para que pase al otro "subgrafo".
+        ejecutar_adyacentes(pyramids[0], grafo_caso_especial, tablero, redirigir_grafo_pyramid_2);
+        ejecutar_adyacentes(pyramids[1], grafo_caso_especial, tablero, redirigir_grafo_pyramid_1);
 
         // Conecto el destino de los "subgrafos" al destino original.
-        vertice = tablero.calcular_indice(destino);
-        grafo_caso_especial.cambiar_arista(vertice + (size_t) pow((double) tablero.columnas(), 2), vertice, 0);
-        grafo_caso_especial.cambiar_arista(vertice + 2 * (size_t) pow((double) tablero.columnas(), 2), vertice, 0);
+        // El offset no es mas que la cantidad de vértices (81, en este problema).
+        vertice = tablero.obtener_vertice(destino);
+        size_t offset = tablero.columnas() * tablero.filas();
+        grafo_caso_especial.cambiar_arista(vertice + offset, vertice, 0);
+        grafo_caso_especial.cambiar_arista(vertice + 2 * offset, vertice, 0);
 
         grafos.push_back(grafo_caso_especial);
     }

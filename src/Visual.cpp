@@ -3,8 +3,8 @@
 #include "Visual.hpp"
 
 void Visual::imprimir_tablero(Matriz& visualizacion) {
-    for (int i = 0; i < (int) visualizacion.filas(); i++) {
-        for (int j = 0; j < (int) visualizacion.columnas(); j++) {
+    for (size_t i = 0; i < visualizacion.filas(); i++) {
+        for (size_t j = 0; j < visualizacion.columnas(); j++) {
             int vertice = visualizacion.elemento(i, j);
             switch (vertice) {
                 case PARED:

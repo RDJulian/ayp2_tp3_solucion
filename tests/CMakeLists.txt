@@ -12,10 +12,10 @@ add_executable(Google_Tests_run
         ABB_tests.cpp
         Heap_tests.cpp
         Grafo_tests.cpp
-        ../src/Grafo.cpp
-        ../src/Dijkstra.cpp
-        ../src/Floyd.cpp
-        ../src/Matriz.cpp
+        ../src/TDAs/Grafo/Grafo.cpp
+        ../src/TDAs/Grafo/Dijkstra.cpp
+        ../src/TDAs/Grafo/Floyd.cpp
+        ../src/TDAs/Matriz.cpp
 )
 
 target_link_libraries(Google_Tests_run gtest gtest_main)

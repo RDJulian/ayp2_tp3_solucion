@@ -2,8 +2,9 @@
 #define AYP2_TP3_SOLUCION_ARBOLPLACAS_HPP
 
 #include "Placa.hpp"
-#include "ABB.hpp"
+#include "TDAs/ABB.hpp"
 
+// TODO: Documentar
 class ArbolPlacas : public ABB<Placa*, Placa::menor, Placa::igual> {
 public:
     ArbolPlacas();

@@ -10,7 +10,7 @@ private:
     int id = 0;
 public:
     // Constructores.
-    Placa() {};
+    Placa() = default;
 
     Placa(std::string nombre, std::string leyenda, int id);
 
@@ -56,7 +56,7 @@ public:
     static void liberar(Placa* placa);
 
     // Destructor.
-    ~Placa() {};
+    ~Placa() = default;
 };
 
 #endif

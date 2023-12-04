@@ -2,6 +2,7 @@
 #define GRAFOS_GRAFO_H
 
 #include "CaminoMinimo.hpp"
+#include "Camino.hpp"
 
 class Grafo {
 private:
@@ -53,7 +54,7 @@ public:
     // Pre: -
     // Post: Devuelve el camino minimo de origen a destino. Si los vértices no son válidos o no se seleccionó
     // un algoritmo, devuelve un camino vacío.
-    std::pair<std::vector<size_t>, int> obtener_camino_minimo(size_t origen, size_t destino);
+    Camino obtener_camino_minimo(size_t origen, size_t destino);
 
     // Constructor por copia.
     Grafo(const Grafo& grafo1);
@@ -61,9 +62,12 @@ public:
     // Operador de asignación.
     Grafo& operator=(const Grafo& grafo1);
 
-    ~Grafo();
-
+    // Pre: -
+    // Post: Modifica el grafo invocante, "uniendole" la matriz de adyacencia del grafo pasado por
+    // parámetro. Los vértices del segundo grafo se identifican de la forma x + vertices (del invocante).
     void juntar_grafos(Grafo& grafo);
+
+    ~Grafo();
 };
 
 #endif

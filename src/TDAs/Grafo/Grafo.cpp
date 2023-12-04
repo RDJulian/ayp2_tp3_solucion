@@ -1,6 +1,6 @@
-#include "Grafo.hpp"
-#include "Floyd.hpp"
-#include "Dijkstra.hpp"
+#include "TDAs/Grafo/Grafo.hpp"
+#include "TDAs/Grafo/Floyd.hpp"
+#include "TDAs/Grafo/Dijkstra.hpp"
 #include <iostream>
 
 Grafo::Grafo() {
@@ -16,7 +16,7 @@ Grafo::Grafo(size_t cantidad_vertices) {
     algoritmo_camino_minimo = nullptr;
     hay_cambios = true;
     for (size_t i = 0; i < vertices; i++) {
-        matriz_adyacencia.elemento((int) i, (int) i) = 0;
+        matriz_adyacencia.elemento(i, i) = 0;
     }
 }
 
@@ -33,7 +33,7 @@ int Grafo::obtener_peso_camino(std::vector<size_t> camino) {
     int peso = 0;
     if (camino.size() > 1) {
         for (size_t i = 0; i < camino.size() - 1; i++) {
-            peso += matriz_adyacencia.elemento((int) camino[i], (int) camino[i + 1]);
+            peso += matriz_adyacencia.elemento(camino[i], camino[i + 1]);
         }
     }
     return peso;
@@ -46,7 +46,7 @@ void Grafo::agregar_vertice() {
 
 void Grafo::cambiar_arista(size_t origen, size_t destino, int peso) {
     if (origen < vertices && destino < vertices) {
-        matriz_adyacencia.elemento((int) origen, (int) destino) = peso;
+        matriz_adyacencia.elemento(origen, destino) = peso;
         hay_cambios = true;
     } else {
         std::cout << "ERROR: Los vértices no son válidos. No se cambió el camino." << std::endl;
@@ -83,8 +83,8 @@ void Grafo::usar_dijkstra() {
     hay_cambios = true;
 }
 
-std::pair<std::vector<size_t>, int> Grafo::obtener_camino_minimo(size_t origen, size_t destino) {
-    std::pair<std::vector<size_t>, int> camino;
+Camino Grafo::obtener_camino_minimo(size_t origen, size_t destino) {
+    Camino camino;
     if (algoritmo_camino_minimo) {
         if (origen < vertices && destino < vertices) {
             camino.first = algoritmo_camino_minimo->calcular_camino_minimo(matriz_adyacencia, vertices, origen,
@@ -98,25 +98,6 @@ std::pair<std::vector<size_t>, int> Grafo::obtener_camino_minimo(size_t origen, 
         std::cout << "ERROR: No se indicó el algoritmo a usar." << std::endl;
     }
     return camino;
-}
-
-// Metodo que "pega" las matrices de adyacencia.
-void Grafo::juntar_grafos(Grafo& grafo) {
-    Matriz nueva_matriz = Matriz(vertices + grafo.vertices, INFINITO);
-    for (int i = 0; i < (int) (vertices + grafo.vertices); i++) {
-        for (int j = 0; j < (int) (vertices + grafo.vertices); j++) {
-            if (i < (int) vertices && j < (int) vertices) {
-                nueva_matriz.elemento(i, j) = matriz_adyacencia.elemento(i, j);
-            } else if (i >= (int) vertices && j >= (int) vertices) {
-                nueva_matriz.elemento(i, j) =
-                        grafo.matriz_adyacencia.elemento(i - (int) vertices, j - (int) vertices);
-            }
-        }
-    }
-    matriz_adyacencia = nueva_matriz;
-    vertices = vertices + grafo.vertices;
-    algoritmo_camino_minimo = nullptr;
-    hay_cambios = true;
 }
 
 Grafo::Grafo(const Grafo& grafo1) {
@@ -135,6 +116,24 @@ Grafo& Grafo::operator=(const Grafo& grafo1) {
         hay_cambios = grafo1.hay_cambios;
     }
     return *this;
+}
+
+void Grafo::juntar_grafos(Grafo& grafo) {
+    Matriz nueva_matriz = Matriz(vertices + grafo.vertices, INFINITO);
+    for (size_t i = 0; i < (vertices + grafo.vertices); i++) {
+        for (size_t j = 0; j < (vertices + grafo.vertices); j++) {
+            if (i < vertices && j < vertices) {
+                nueva_matriz.elemento(i, j) = matriz_adyacencia.elemento(i, j);
+            } else if (i >= vertices && j >= vertices) {
+                nueva_matriz.elemento(i, j) =
+                        grafo.matriz_adyacencia.elemento(i - vertices, j - vertices);
+            }
+        }
+    }
+    matriz_adyacencia = nueva_matriz;
+    vertices = vertices + grafo.vertices;
+    algoritmo_camino_minimo = nullptr;
+    hay_cambios = true;
 }
 
 Grafo::~Grafo() {

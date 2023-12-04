@@ -1,21 +1,21 @@
 #include "Tablero.hpp"
 #include "Random.hpp"
-#include <cmath>
+#include "ConversorTablero.hpp"
 
-Tablero::Tablero(std::pair<size_t, size_t> dimensiones, std::pair<int, int> inicio, std::pair<int, int> destino,
-                 const std::vector<std::pair<int, int>>& paredes) :
-        Matriz(dimensiones.first, dimensiones.second, CAMINO) {
-    for (auto pared: paredes) {
+Tablero::Tablero(std::pair<size_t, size_t> dimensiones, Casillero inicio, Casillero destino,
+                 const std::vector<Casillero>& paredes) : Matriz(dimensiones.first, dimensiones.second, CAMINO) {
+    for (Casillero pared: paredes) {
         elemento(pared) = PARED;
     }
-    elemento(destino) = DESTINO;
     elemento(inicio) = INICIO;
-    this->destino = destino;
+    elemento(destino) = DESTINO;
     posicion_james = inicio;
+    this->destino = destino;
+    cantidad_pyramids = 0;
     generar_pyramids_aleatorios();
 }
 
-bool Tablero::puede_generar_pyramid_head(std::pair<int, int> pyramid) {
+bool Tablero::puede_generar_pyramid_head(Casillero pyramid) {
     return elemento(pyramid) != INICIO &&
            elemento(pyramid) != DESTINO &&
            elemento(pyramid) != PARED &&
@@ -25,8 +25,8 @@ bool Tablero::puede_generar_pyramid_head(std::pair<int, int> pyramid) {
 void Tablero::generar_pyramid_head() {
     bool valido = false;
     while (!valido) {
-        std::pair<int, int> pyramid = {Random::random(0, (int) fila - 1),
-                                       Random::random(0, (int) columna - 1)};
+        Casillero pyramid = {Random::number(0, (int) fila - 1),
+                             Random::number(0, (int) columna - 1)};
         if (puede_generar_pyramid_head(pyramid)) {
             elemento(pyramid) = PYRAMID;
             valido = true;
@@ -36,56 +36,80 @@ void Tablero::generar_pyramid_head() {
 
 void Tablero::generar_pyramids_aleatorios() {
     int chance;
-    for (int i = 0; i < 2; i++) {
-        chance = Random::random(0, 1);
+    for (size_t i = 0; i < CANTIDAD_MAXIMA_PYRAMIDS; i++) {
+        chance = Random::number(0, 1);
         if (chance == 1) {
             generar_pyramid_head();
+            cantidad_pyramids++;
         }
     }
 }
 
-std::pair<int, int> Tablero::obtener_indices(size_t casillero) {
-    int i = (int) (casillero / columna);
-    int j = (int) (casillero % columna);
-    return {i, j};
+bool Tablero::casillero_valido(int i, int j) {
+    return i >= 0 && i < (int) fila && j >= 0 && j < (int) columna;
 }
 
+bool Tablero::casillero_valido(std::pair<int, int> indices) {
+    return casillero_valido(indices.first, indices.second);
+}
 
-void Tablero::afectar_adyacente(int i, int j, Matriz& visualizacion) {
-    if (visualizacion.indice_valido(i, j) && visualizacion.elemento(i, j) == CAMINO) {
-        visualizacion.elemento(i, j) = MULTIPLICADO;
+Casillero Tablero::obtener_casillero(size_t vertice) {
+    return {vertice / columna, vertice % columna};
+}
+
+void Tablero::insertar_multiplicados(Casillero casillero, Matriz& visualizacion) {
+    int i = (int) casillero.first;
+    int j = (int) casillero.second;
+    std::vector<std::pair<int, int>> posibles_adyacentes = {{i + 1, j},
+                                                            {i - 1, j},
+                                                            {i,     j + 1},
+                                                            {i,     j - 1}};
+    for (auto adyacente: posibles_adyacentes) {
+        if (casillero_valido(adyacente) && visualizacion.elemento(adyacente) == CAMINO) {
+            visualizacion.elemento(adyacente) = MULTIPLICADO;
+        }
     }
 }
 
-
-void Tablero::quitar_pyramid_head(std::pair<int, int> indices) {
-    if (elemento(indices) == PYRAMID) {
-        elemento(indices) = CAMINO;
-    }
+size_t Tablero::obtener_vertice(Casillero casillero) {
+    return calcular_indice(casillero.first, casillero.second);
 }
 
+std::vector<Camino> Tablero::obtener_caminos() {
+    std::vector<Camino> caminos;
+    std::vector<Grafo> grafos = ConversorTablero::generar_grafos(*this);
+    for (Grafo grafo: grafos) {
+        grafo.usar_dijkstra();
+        size_t vertice_origen = obtener_vertice(posicion_james);
+        size_t vertice_destino = obtener_vertice(destino);
+        Camino camino = grafo.obtener_camino_minimo(vertice_origen, vertice_destino);
+        caminos.push_back(camino);
+    }
+    return caminos;
+}
+
+size_t Tablero::obtener_cantidad_pyramids() {
+    return cantidad_pyramids;
+}
 
 Matriz Tablero::obtener_visualizacion(std::vector<size_t>& camino) {
     Matriz visualizacion(fila, columna);
-    for (int i = 0; i < (int) fila; i++) {
-        for (int j = 0; j < (int) columna; j++) {
+    for (size_t i = 0; i < fila; i++) {
+        for (size_t j = 0; j < columna; j++) {
             visualizacion.elemento(i, j) = elemento(i, j);
         }
     }
     for (int i = 0; i < (int) fila; i++) {
         for (int j = 0; j < (int) columna; j++) {
-            if (visualizacion.elemento(i, j) == PYRAMID) {
-                afectar_adyacente(i, j + 1, visualizacion);
-                afectar_adyacente(i, j - 1, visualizacion);
-                afectar_adyacente(i + 1, j, visualizacion);
-                afectar_adyacente(i - 1, j, visualizacion);
+            if (visualizacion.elemento(Casillero(i, j)) == PYRAMID) {
+                insertar_multiplicados({i, j}, visualizacion);
             }
         }
     }
-    for (size_t casillero: camino) {
-        std::pair<int, int> indices = obtener_indices(casillero % (size_t) pow((double) columna, 2));
-        if (visualizacion.elemento(indices) == CAMINO || visualizacion.elemento(indices) == MULTIPLICADO) {
-            visualizacion.elemento(indices) = CAMINO_OPTIMO;
+    for (size_t vertice: camino) {
+        Casillero casillero = obtener_casillero(vertice % (columna * fila));
+        if (visualizacion.elemento(casillero) == CAMINO || visualizacion.elemento(casillero) == MULTIPLICADO) {
+            visualizacion.elemento(casillero) = CAMINO_OPTIMO;
         }
     }
     visualizacion.elemento(posicion_james) = JAMES;

@@ -53,12 +53,12 @@ void InventarioArmas::guardar_arma(Arma* arma) {
 }
 
 void InventarioArmas::generar_arma() {
-    Arma* arma = new Arma("MP727", (size_t) Random::random(10, 100));
+    Arma* arma = new Arma("MP727", (size_t) Random::number(10, 100));
     guardar_arma(arma);
 }
 
 void InventarioArmas::generar_arma_aleatoria() {
-    int chance = Random::random(1, 5);
+    int chance = Random::number(1, 5);
     if (chance == 5) {
         generar_arma();
     }

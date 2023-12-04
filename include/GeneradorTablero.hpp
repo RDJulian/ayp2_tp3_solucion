@@ -4,10 +4,10 @@
 #include "Tablero.hpp"
 
 const std::pair<size_t, size_t> DIMENSIONES = {9, 9};
-const std::pair<int, int> COORDENADA_INICIO = {8, 0};
-const std::pair<int, int> COORDENADA_DESTINO = {0, 8};
+const Casillero CASILLERO_INICIO = {8, 0};
+const Casillero CASILLERO_DESTINO = {0, 8};
 
-const std::vector<std::pair<int, int>> LAYOUT_1 = {
+const std::vector<Casillero> LAYOUT_1 = {
         {0, 1},
         {1, 1},
         {2, 1},
@@ -37,7 +37,7 @@ const std::vector<std::pair<int, int>> LAYOUT_1 = {
         {7, 7}
 };
 
-const std::vector<std::pair<int, int>> LAYOUT_2 = {
+const std::vector<Casillero> LAYOUT_2 = {
         {1, 1},
         {1, 2},
         {1, 3},
@@ -65,6 +65,7 @@ const std::vector<std::pair<int, int>> LAYOUT_2 = {
         {7, 1},
 };
 
+// TODO: Documentar
 class GeneradorTablero {
 public:
     static Tablero generar_tablero(size_t altura);

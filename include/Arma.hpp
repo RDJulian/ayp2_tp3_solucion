@@ -10,7 +10,7 @@ private:
     size_t potencia = 0;
 public:
     // Constructores.
-    Arma() {};
+    Arma() = default;
 
     Arma(std::string nombre, size_t potencia);
 
@@ -63,7 +63,7 @@ public:
     static void liberar(Arma* arma);
 
     // Destructor.
-    ~Arma() {};
+    ~Arma() = default;
 };
 
 #endif

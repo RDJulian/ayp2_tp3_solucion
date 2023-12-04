@@ -17,6 +17,15 @@ protected:
     int* matriz = nullptr;
     size_t fila;
     size_t columna;
+
+    // Pre: -
+    // Post: Devuelve true si el indice es valido (0 <= i < filas, 0 <= j < columnas).
+    bool indice_valido(size_t i, size_t j);
+
+    // Pre: El indice bidimensional debe ser valido.
+    // Post: Devuelve el indice unidimensional equivalente al ingresado.
+    size_t calcular_indice(size_t i, size_t j);
+
 public:
     // Constructor default
     Matriz();
@@ -44,26 +53,15 @@ public:
     Matriz& operator=(const Matriz& matriz1);
 
     // Pre: -
-    // Post: Devuelve true si el indice es valido (0 <= i < filas, 0 <= j < columnas).
-    bool indice_valido(int i, int j);
-
-    // Pre: El indice bidimensional debe ser valido.
-    // Post: Devuelve el indice unidimensional equivalente al ingresado.
-    size_t calcular_indice(int i, int j);
-
-    // Sobrecarga para simplificar código.
-    size_t calcular_indice(std::pair<int, int> indices);
+    // Post: Aumenta el tamaño de la matriz en una fila y una columna.
+    void expandir();
 
     // Pre: El indice debe ser valido, es decir, 0 <= i < filas, 0 <= j < columnas.
     // Post: Devuelve la referecia al elemento accedido.
-    int& elemento(int i, int j);
+    int& elemento(size_t i, size_t j);
 
     // Sobrecarga para simplificar código.
-    int& elemento(std::pair<int, int> indices);
-
-    // Pre: -
-    // Post: Aumenta el tamaño de la matriz en una fila y una columna.
-    void expandir();
+    int& elemento(std::pair<size_t, size_t> indices);
 
     // Pre: -
     // Post: Devuelve la cantidad de filas de la matriz.

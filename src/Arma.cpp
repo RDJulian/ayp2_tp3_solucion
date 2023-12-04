@@ -7,7 +7,7 @@ Arma::Arma(std::string nombre, size_t potencia) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Arma& arma) {
-    os << arma.nombre << '\n';
+    os << arma.nombre << ". Potencia: " << arma.potencia << ".\n";
     return os;
 }
 
